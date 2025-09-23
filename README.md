@@ -79,6 +79,10 @@
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout tls.key -out tls.crt -subj "/CN=myapp.example.com"
 ```
+
+<img width="943" height="127" alt="image" src="https://github.com/user-attachments/assets/5951a308-87c7-4b39-a50b-b49acd77a10e" />
+
+
 2. **Создать Secret**
 3. **Настроить Ingress**
 4. **Проверить HTTPS-доступ**
