@@ -61,6 +61,13 @@
   - `configmap-web.yaml`
 - Скриншот вывода `curl` или браузера
 
+<img width="634" height="131" alt="image" src="https://github.com/user-attachments/assets/186d8a6f-7d08-40b7-b88a-9b3160291175" />
+
+<img width="564" height="110" alt="image" src="https://github.com/user-attachments/assets/58a67cd3-a415-4b89-9343-314f0e06454a" />
+
+
+
+
 ---
 ## **Задание 2: Настройка HTTPS с Secrets**  
 ### **Задача**  
