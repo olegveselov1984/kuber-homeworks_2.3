@@ -93,6 +93,146 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   - `ingress-tls.yaml`
 - Скриншот вывода `curl -k`
 
+
+Создаем Secret для сертификата {kubectl create secret tls tls-secret --cert=tls.crt --key=tls.key} (тогда он хранится в подкорке с именем tls-secret) 
+или можем сами сделать требуемый файл самостоятельно:
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-secret
+type: kubernetes.io/tls
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURHekNDQWdPZ0F3SUJBZ0lVQlR3d0FsaU55ZVlDVWFSaTdhUGgvT0htKzc4d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0hURWJNQmtHQTFVRUF3d1NiWGt0WVhCd0xtVjRZVzF3YkdVdVkyOXRNQjRYRFRJMU1Ea3lOREE1TXpjeApObG9YRFRJMk1Ea3lOREE1TXpjeE5sb3dIVEViTUJrR0ExVUVBd3dTYlhrdFlYQndMbVY0WVcxd2JHVXVZMjl0Ck1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBc1ZibzVmZFlVRGFJdm5LK21sVXUKTjY4d2t4R3QwMk1raWx2Tmk4QUxSVjB4SkRLWGRmSWQvN3ZsN3dpUDNoeU9EdFpGaUthVDlXT3hScTdWYWxwYwo4MjcvOVNBbklvWlRXRExMRkF0U2hXcmJpZ1hCVFFjV29xekRaMUpLZ3cvRk93bEp3ZFZwdUQ2SEhYM0FnN1BWCjl3Mk5BOW9ibGp1Q01qV1Jkc1V2TzNLaGJzR2xiMlhLdkVXS1pETGdrNElkd2o0T1hPMGxtV0o0UE9WaG1OaEgKbFF5UFp1ejBCajk3ZFF3elNQa2dEeGtuaE12MmxKUGtTNWJtb1FLczZUMjMxRXJac05Qb3VjeTNDOGV4cGhDbApIUlVJa3JlZkQ1aU5oTTVjeS9keS9MeUV3NFQ4UkY4K1RJU1ZBRHdtKytRUnNvNzhxeFdZYVZ3R0JmMnpLMTVqClp3SURBUUFCbzFNd1VUQWRCZ05WSFE0RUZnUVVGV1BZUStyTEVmWXhEMW91WjlzUXF5c1d0SzR3SHdZRFZSMGoKQkJnd0ZvQVVGV1BZUStyTEVmWXhEMW91WjlzUXF5c1d0SzR3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFOQmdrcQpoa2lHOXcwQkFRc0ZBQU9DQVFFQWN4aWNGb0NSNXcwUzE1QjdESTRkb3hBbGFBSDJ1Q3kvWTVHdGNsSjZ0S3FZCkIrb0ZjdjdneW91aVVzcFBaNHhDKzhiTW4wTm9LUnpOUytabFQrVXNsTzhwQmVuUnFnL3RmTGxaMnJGWXM2cFoKOEFZcHFUekhGRnpuQnkrMUdSQUw4aGhWRDdscW1teTdYbE1WNDlrZXZ3ZHdNeHVRTDAzdGlHREZEa2NRYksxagowY3h4ZGQ5aHF0MkRhdHd0c3hKUytXc1JuMmdMb3hsaWV1aVFENEJHanJIZW4xdUdpUFp2dXdUcUJRV2dtRllQCmhCSVdEMTZuTWRXRWx4bVE2b1ZRRXZZcmdMa0tYd1pyUjAwZEIrQi95aWVRaUtIRmNOSlNBZWdzVFJ2d3VyalUKN29mOTU2RW1BZ2QxSWxkWS9sYmNlTktJV0U4bUR1d3c1MEFSdWs0RWh3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2Z0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktnd2dnU2tBZ0VBQW9JQkFRQ3hWdWpsOTFoUU5vaSsKY3I2YVZTNDNyekNURWEzVFl5U0tXODJMd0F0RlhURWtNcGQxOGgzL3UrWHZDSS9lSEk0TzFrV0lwcFAxWTdGRwpydFZxV2x6emJ2LzFJQ2NpaGxOWU1zc1VDMUtGYXR1S0JjRk5CeGFpck1OblVrcUREOFU3Q1VuQjFXbTRQb2NkCmZjQ0RzOVgzRFkwRDJodVdPNEl5TlpGMnhTODdjcUZ1d2FWdlpjcThSWXBrTXVDVGdoM0NQZzVjN1NXWlluZzgKNVdHWTJFZVZESTltN1BRR1AzdDFERE5JK1NBUEdTZUV5L2FVaytSTGx1YWhBcXpwUGJmVVN0bXcwK2k1ekxjTAp4N0dtRUtVZEZRaVN0NThQbUkyRXpsekw5M0w4dklURGhQeEVYejVNaEpVQVBDYjc1Qkd5anZ5ckZaaHBYQVlGCi9iTXJYbU5uQWdNQkFBRUNnZ0VCQUlUOGdhYUNkKzJmRjZpSjc3bFlpMUlpeERCbG40N1gyRDBSWHZDZjBWUHcKOExzT1hWcUxlRWVncG1zOFpuYlB2eEFOU3hPUXAzL3JoTE5XeEovK3A1bTk4Wi9tdnJJN1BTRDA1aWxmM0VCRQp3K0diTXp3S1JzVXkvVTNyL2dpT3VQN3VsaXNQV1RwYldZT2FHOVluOUJwU1JSOVFYa09vMkpmQ2FCVkRCWXB6CnlsUlYrR0o2dm9ZOTFtQ0JTK2RCajh1WndVZWhuZzdYMnRyNVAzZk1haitQejVEZ2lSZ0Z3V1VweHlGVEdaMEIKdStUbnBvUE45YUJKcUxsdU4rSHRGbzlMTnZXakhKSEwrUExVYzZMdnk5bTRQUHFBN1Q1QlMyRTZJVDk0VUkxUQpjSXFkaGVEeGNIbEJRN3hFQm40c2FRbHhTWlNad0hVS3ptUEV3Z08zUnFFQ2dZRUEySFdwaXpYb0RzTUt0T1hyClluelRvRUd5RVZBcnpoKy9XaTJvUlZseVdEODhIRmRXZ2NmcE1KQnA4Wno0UjBRdnJHcVJtamo3K29UL0hkcGQKM3RBalBGWkVmQTV4RjRBZndPYUNDZHQ4Ym1yOWNSNWJNanpwSXhkTHdKRTJhSUlmRll3a25DUWRuZTlqY3p6ZwpjZmYzNGl4TmlOc1hlOUFtMGE0aVR1emc2cmtDZ1lFQTBidmR5aHU0b2M4WkNQSVk0V3UzTWJTZzRkeTVUNk54CjM1YlpOZDdOdlM3eDBwbW45WDhITG9mYklHUW85aUVGQ3NNeTZqdHJtOUVwRVV6S2FEQmtsU2o4QWs1bGJsMWcKQldvRFJSaFBaaW1OMzQyZ0FmQnZvT3ZaNFAxdnRUM0hpMlF2QmV6UTdaNmVNYThtRDZrb0pSNGdici83MWNpYQpWWmdoTkF4YUx4OENnWUVBcXFzekw5RWtGQ2VTbElsSUs1SlNaZVFHbTRJRDEvVE9Nak1YbnY1a210SFkrbHVlCm1KdGY4R3VkTE9UZ0dZallzZkFndDJIQXc0a0RnYTFBSUVNcDFSUUwwV2l0b0tMajVudVpBbDZ0WUg0NU1HeUgKNlRkL2RxeVNqTld4K1hySE9YMFRESTJwVUhLRWprTHNrTSs4QWZkK2RxNlFlSTNwWGFBWDZ2VDRiZmtDZ1lCMwp5MStHUmtreUd2Rkl1OGRjVWtNajMvRVlzUk1qbXM2N0VCVm5BS2p4Q3ZSUy96TUJOUm9zQ0tzdm1DWVJWNURpCnNkWE9GanlEbG5kbml6MzlQczdrcDdFeHZBZVJmMElPTlp4Q2hmMHI5RVkxejFYNlpaUE5EWW00U2VuWlVyMDgKTCsvdjZYRDRtR1h4S1FLTFpXb3BzVWlER2FORlc3eFRjWDVkbFVTWnJ3S0JnRzVGWjIwdlduQVdPVnZmcU5WQgpMOHhkNmErS0FybU5BZkNYb3NrNjJickQ4R09zSWZVMG1jU1VMdlMveUtKQWU5RU5Dd201SllDdE5YMkxJZ0pxCmpRQXJwNXFrVGQ0djAvcmYyRG1XRWJsbDVGUC9XeHJUb2tJMGxDT3R3TlBVUE8yS3A5OUg4UzBiVUNpZmZBT2UKT3cwQ1ZtVEVRMy9KdFFER2xpMDlZelNRCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+# TLS в base64 вместе с -----BEGIN CERTIFICATE----- и -----END CERTIFICATE-----
+```
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: https-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  tls:
+  - hosts:
+    - my-app.example.com
+    secretName: tls-secret
+  rules:
+  - host: my-app.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: main-service
+            port:
+              number: 443
+```
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: main-service
+spec:
+  selector:
+    app: main
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+```
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 443
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+        - name: web-html
+          mountPath: /usr/share/nginx/html
+        - name: cert-volume
+          mountPath: /etc/nginx/ssl
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-https-config
+      - name: web-html
+        configMap:
+          name: nginx-html
+      - name: cert-volume
+        secret:
+          secretName: tls-secret
+```
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-https-config
+data:
+  default.conf: |
+    server {
+        listen       443 ssl;
+        server_name  localhost;
+
+        ssl_certificate      /etc/nginx/ssl/tls.crt;
+        ssl_certificate_key  /etc/nginx/ssl/tls.key;
+
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html;
+        }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+data:
+  index.html: |
+    <html>
+    <body>
+    test
+    </body>
+    </html>
+```
+по ip
+<img width="1040" height="235" alt="image" src="https://github.com/user-attachments/assets/dd82224c-028a-47a2-b889-197c169086d2" />
+
+по имени, сертификт есть
+<img width="810" height="502" alt="image" src="https://github.com/user-attachments/assets/218b6357-03eb-4ea6-9137-e810b277b3fd" />
+
+
+
+
+
+
+
+
 ---
 ## **Задание 3: Настройка RBAC**  
 ### **Задача**  
