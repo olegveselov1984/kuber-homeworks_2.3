@@ -252,6 +252,23 @@ openssl x509 -req -in developer.csr -CA {CA серт вашего кластер
 3. **Создать Role (только просмотр логов и описания подов) и RoleBinding**
 4. **Проверить доступ**
 
+```
+openssl genrsa -out netology.key 2048
+cp /var/snap/microk8s/current/certs/ca.crt
+cp /var/snap/microk8s/current/certs/ca.key
+openssl x509 -req -in netology.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out netology.crt -days 500
+kubectl config set-credentials netology --client-certificate=netology.crt --client-key=netology.key --embed-certs=true
+kubectl config set-context netology --cluster=mikrok8s-cluster --user=netology
+microk8s enable rbac
+microk8s kubectl apply -f rbac.authorization.yaml
+microk8s kubectl apply -f rbac.authorization.binding.yaml
+```
+
+<img width="1127" height="90" alt="image" src="https://github.com/user-attachments/assets/18523cae-5f97-4584-a333-fa972aa509fa" />
+
+
+
+
 ### **Что сдать на проверку**  
 - Манифесты:
   - `role-pod-reader.yaml`
